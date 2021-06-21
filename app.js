@@ -18,7 +18,7 @@ const promptUser = () => {
         {
             type: 'input',
             name: 'gitub',
-            message: 'Enter your GitHub Username'
+            message: 'Please enter your GitHub Username'
         },
         {
             type: 'confirm',
@@ -37,12 +37,7 @@ const promptUser = () => {
                     return false;
                 }
             }
-        },
-        {
-            type: 'input',
-            name: 'about',
-            message: 'Provide some information about yourself:'
-        }
+        }    
     ]);
 };
 
