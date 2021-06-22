@@ -1,8 +1,8 @@
-const fs = require('fs');
-
 const inquirer = require('inquirer');
 
 const generatePage = require('./src/page-template.js');
+
+const { writeFile, copyFile } = require('./utils/generate-site');
 
 const promptUser = () => {
     return inquirer.prompt([
@@ -22,7 +22,14 @@ const promptUser = () => {
         {
             type: 'input',
             name: 'gitub',
-            message: 'Please enter your GitHub Username'
+            message: 'Please enter your GitHub Username (Required)',
+            validate: githubInput => {
+                if (githubInput) => {
+                    return true;
+                } else {
+                    console.log('Please enter your GitHub Username!');
+                }
+            }
         },
         {
             type: 'confirm',
@@ -126,14 +133,18 @@ Add a New Project
 promptUser()
     .then(promptProject)
     .then(portfolioData => {
-        const pageHTML = generatePage(portfolioData);
-
-        fs.writeFile('./index.html', pageHTML, err => {
-            if (err) throw new Error(err);
-
-            console.log('Portfolio complete! Check out index.html to see the output!');
-        });
+        return generatePage(portfolioData);
+    })
+    .then(pageHTML => {
+        return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse);
+    })
+    .catch(err => {
+        console.log(err);
     });
-    
-
-
